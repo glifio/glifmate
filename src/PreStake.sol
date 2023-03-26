@@ -83,7 +83,7 @@ contract PreStake is ERC721, Operatable {
     // find out which tier deposit this is
     while (_amount > limits[hashIndex]) {
       hashIndex++;
-      if (amountToCheck <= limits[hashIndex]) {
+      if (_amount <= limits[hashIndex]) {
         break;
       }
     }
