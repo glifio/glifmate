@@ -1,0 +1,33 @@
+{
+  "name": "glifmate",
+  "version": "0.0.0",
+  "description": "FEVM helper contracts for GLIF Pools",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/glif-confidential/glifmate.git"
+  },
+  "scripts": {
+    "build:types": "mkdir -p typechain && typechain --target=ethers-v5 ./out/**/*[^.metadata].json --out-dir typechain/ --show-stack-traces"
+  },
+  "devDependencies": {
+    "@typechain/ethers-v5": "^10.1.0",
+    "@types/node": "^18.7.21",
+    "cross-env": "^7.0.3",
+    "npm-run-all2": "^6.0.2",
+    "path": "^0.12.7",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.9.1",
+    "typechain": "^8.1.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@ethersproject/providers": "^5.6.8",
+    "ethers": "^5.7.1"
+  },
+  "files": [
+    "typechain"
+  ]
+}

@@ -1,0 +1,34 @@
+[profile.default]
+src = 'src'
+out = 'out'
+libs = ['lib', 'shim/Mock']
+solc_version = "0.8.17"
+remappings = [
+  "ds-test/=lib/forge-std/lib/ds-test/src/",
+  "forge-std/=lib/forge-std/src/",
+  "@openzeppelin/=lib/openzeppelin-contracts/",
+  "solmate/=lib/solmate/src/",
+  "bytes-utils/=lib/solidity-bytes-utils/contracts/",
+  "src/=src/",
+  "shim/=shim/Mock/"
+]
+
+[profile.fevm]
+src = 'src'
+out = 'out-fevm'
+libs = ['lib', 'shim/FEVM']
+solc_version = "0.8.17"
+remappings = [
+  "ds-test/=lib/forge-std/lib/ds-test/src/",
+  "forge-std/=lib/forge-std/src/",
+  "@openzeppelin/=lib/openzeppelin-contracts/",
+  "solmate/=lib/solmate/src/",
+  "src/=src/",
+  "shim/=shim/FEVM/",
+  "fevmate/=lib/fevmate/contracts/"
+]
+
+[fuzz]
+runs = 1024
+
+# See more config options https://github.com/foundry-rs/foundry/tree/master/config

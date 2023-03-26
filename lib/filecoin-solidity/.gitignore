@@ -1,0 +1,12 @@
+.idea
+**/*.bin
+**/*.signatures
+**/*.opcode
+**/bin/*
+!**/bin/.gitkeep
+**/target/
+**/build
+node_modules/
+foundry-cache
+out/
+testing/*.csv

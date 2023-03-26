@@ -1,0 +1,6 @@
+target
+*.wat
+*.wasm
+.idea/
+**/.DS_Store
+output/*.car

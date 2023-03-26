@@ -1,0 +1,10 @@
+ds-test/=lib/forge-std/lib/ds-test/src/
+forge-std/=lib/forge-std/src/
+@openzeppelin/=lib/openzeppelin-contracts/
+solmate/=lib/solmate/src/
+bytes-utils/=lib/solidity-bytes-utils/contracts/
+filecoin-solidity/=lib/filecoin-solidity/contracts/v0.8/
+fevmate/=lib/fevmate/contracts/
+src/=src/
+deploy/=deploy
+shim/=shim/Mock/
