@@ -31,6 +31,10 @@ contract PreStake is OwnedClaimable {
     _deposit(msg.sender, msg.value);
   }
 
+  fallback() external payable {
+    _deposit(msg.sender, msg.value);
+  }
+
   function totalValueLocked() external view returns (uint256) {
     return wFIL.balanceOf(address(this)) + address(this).balance;
   }
