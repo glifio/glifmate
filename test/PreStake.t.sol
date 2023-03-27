@@ -24,7 +24,6 @@ contract PreStakeTest is Test {
     preStake = new PreStake(owner, address(wFIL), address(poolToken));
     vm.startPrank(owner);
     poolToken.setMinter(address(preStake));
-    preStake.open();
     vm.stopPrank();
   }
 
