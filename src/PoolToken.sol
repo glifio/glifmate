@@ -2,10 +2,9 @@
 pragma solidity 0.8.17;
 
 import {ERC20} from "shim/ERC20.sol";
-// import {IPoolTokenPlus} from "src/Types/Interfaces/IPoolTokenPlus.sol";
-import {Operatable} from "src/Operatable.sol";
+import {OwnedClaimable} from "shim/OwnedClaimable.sol";
 
-contract PoolToken is ERC20, Operatable {
+contract PoolToken is ERC20, OwnedClaimable {
     address public minter;
     address public burner;
 
@@ -28,9 +27,8 @@ contract PoolToken is ERC20, Operatable {
     }
 
     constructor(
-        address _owner,
-        address _operator
-    ) ERC20("Infinity Pool Staked FIL", unicode"♾️FIL", 18) Operatable(_owner, _operator) {}
+        address _owner
+    ) ERC20("Infinity Pool Staked FIL", "stFIL", 18) OwnedClaimable(_owner) {}
 
     /*//////////////////////////////////////////////////////////////
                             MINT/BURN TOKENS
@@ -38,9 +36,9 @@ contract PoolToken is ERC20, Operatable {
 
     function mint(
         address account,
-        uint256 _amount
+        uint256 amount
     ) external onlyMinter returns (bool) {
-      _mint(account, _amount);
+      _mint(account, amount);
       return true;
     }
 
@@ -55,11 +53,11 @@ contract PoolToken is ERC20, Operatable {
                             SETTERS
     //////////////////////////////////////////////////////////////*/
 
-    function setMinter(address _minter) external onlyOwnerOperator {
+    function setMinter(address _minter) external onlyOwner {
         minter = _minter;
     }
 
-    function setBurner(address _burner) external onlyOwnerOperator {
+    function setBurner(address _burner) external onlyOwner {
         burner = _burner;
     }
 }

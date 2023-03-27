@@ -3,8 +3,6 @@
 
 pragma solidity 0.8.17;
 
-import {FilAddress} from "shim/FilAddress.sol";
-
 /**
  * @dev Contract module which provides a basic access control mechanism, where
  * there is an account (an owner) that can be granted exclusive access to
@@ -16,8 +14,7 @@ import {FilAddress} from "shim/FilAddress.sol";
  * This module is used through inheritance. It will make available all functions
  * from parent (Ownable).
  */
-abstract contract Ownable {
-    using FilAddress for address;
+abstract contract OwnedClaimable {
 
     error Unauthorized();
     error InvalidParams();
@@ -33,7 +30,6 @@ abstract contract Ownable {
      * @dev Initializes the contract setting `owner` as the initial owner.
      */
     constructor(address _initialOwner) {
-      _initialOwner = _initialOwner.normalize();
       if (_initialOwner == address(0)) revert InvalidParams();
 
       _transferOwnership(_initialOwner);
@@ -73,7 +69,7 @@ abstract contract Ownable {
      * Can only be called by the current owner.
      */
     function transferOwnership(address newOwner) public virtual onlyOwner {
-        _pendingOwner = newOwner.normalize();
+        _pendingOwner = newOwner;
         emit OwnershipTransferStarted(owner(), _pendingOwner);
     }
 
@@ -85,7 +81,7 @@ abstract contract Ownable {
     function _transferOwnership(address newOwner) internal virtual {
       delete _pendingOwner;
       address oldOwner = _owner;
-      _owner = newOwner.normalize();
+      _owner = newOwner;
       emit OwnershipTransferred(oldOwner, _owner);
     }
 
