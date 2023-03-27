@@ -13,6 +13,8 @@ contract PreStake is OwnedClaimable {
   event Deposit(address indexed account, uint256 amount);
   event ApprovePool(address indexed pool, uint256 amount);
 
+  error InvalidParams();
+
   IWFIL private wFIL;
   IPoolToken private poolToken;
 
@@ -62,17 +64,19 @@ contract PreStake is OwnedClaimable {
     emit Deposit(_account, _amount);
   }
 
-  function approvePoolToTransfer(address pool) external onlyOwner {
+  function convertFILtoWFIL() external onlyOwner {
+    wFIL.deposit{value: address(this).balance}();
+  }
+
+  function approvePoolToTransfer(address pool, uint256 amount) external onlyOwner {
     if (isOpen) revert Unauthorized();
 
-    wFIL.deposit{value: address(this).balance}();
-    uint256 wFILBal = wFIL.balanceOf(address(this));
     // here we approve the Pool to transferFrom the funds into the Pool
     // the staking tokens have already been distributed through this contract for the
     // pre-commitment deposits of funds, so no new tokens will be minted here
-    wFIL.approve(pool, wFILBal);
+    wFIL.approve(pool, amount);
 
-    emit ApprovePool(pool, wFILBal);
+    emit ApprovePool(pool, amount);
   }
 
   function open() external onlyOwner {
