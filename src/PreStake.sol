@@ -15,10 +15,12 @@ contract PreStake is ERC721, Operatable {
 
   error MintLimit();
 
+  event Stake(address indexed account, uint256 indexed tokenID, uint256 amount);
+
   IWFIL private wFIL;
   IPoolToken private poolToken;
 
-  string public _baseURI = "https://meta.glif.io";
+  string public baseURI = "https://meta.glif.io/";
   string[3] public hashes;
   uint256[2] public limits;
 
@@ -54,48 +56,59 @@ contract PreStake is ERC721, Operatable {
     limits[1] = 15_000e18;
   }
 
+  receive() external payable {
+    _stake(msg.sender, msg.value);
+  }
+
+  function totalValueLocked() external view returns (uint256) {
+    return wFIL.balanceOf(address(this)) + address(this).balance;
+  }
+
   function tokenURI(uint256 tokenID) public view override returns (string memory) {
-    return string(abi.encodePacked(_baseURI, hashes[tokenID.unpackHashIndex()]));
+    return string(abi.encodePacked(baseURI, hashes[tokenID.unpackHashIndex()]));
   }
 
-  function setBaseURI(string memory baseURI) external onlyOwnerOperator {
-    _baseURI = baseURI;
+  function setBaseURI(string memory newBaseURI) external onlyOwnerOperator {
+    baseURI = newBaseURI;
   }
 
-  function deposit(address account, uint256 amount) external underMintCount {
+  function stake(address account, uint256 amount) external underMintCount returns (uint256 tokenID) {
     if (amount == 0) revert InvalidParams();
     // pull in funds from msg.sender
     wFIL.transferFrom(msg.sender, address(this), amount);
 
-    _deposit(account, amount);
+    return _stake(account, amount);
   }
 
-  function deposit(address account) external payable underMintCount {
+  function stake(address account) external payable underMintCount returns (uint256 tokenID) {
     if (msg.value == 0) revert InvalidParams();
 
-    _deposit(account, msg.value);
+    return _stake(account, msg.value);
   }
 
-  function _deposit(address _account, uint256 _amount) internal {
+  function _stake(address _account, uint256 _amount) internal returns (uint256 tokenID) {
     _account = _account.normalize();
 
     uint8 hashIndex = 0;
-    // find out which tier deposit this is
-    while (_amount > limits[hashIndex]) {
-      hashIndex++;
-      if (_amount <= limits[hashIndex]) {
+    // find out which tier NFT metadata to use
+    while (_amount >= limits[hashIndex] && hashIndex < limits.length) {
+      if (hashIndex == limits.length - 1) {
+        hashIndex++;
         break;
       }
+      hashIndex++;
     }
 
     preStakeDeposits[_account] += _amount;
 
-    uint256 tokenID = TokenIDs.packTokenID(mintCount, hashIndex);
+    tokenID = TokenIDs.packTokenID(hashIndex, mintCount);
     mintCount++;
     // mint the NFT to the depositor
     _mint(_account, tokenID);
     // transfer liquid staking tokens to the account 1:1 with the amount of FIL deposited
     poolToken.mint(_account, _amount);
+
+    emit Stake(_account, tokenID, _amount);
   }
 
   function flushToPool(address pool) external onlyOwnerOperator {
