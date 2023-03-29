@@ -10,3 +10,6 @@ Make sure you have installed:
 
 Make sure the `.env.local` is set up with all variables exported.
 
+PoolToken.sol was compiled with 0.8.17+commit.8df45f5f and 200000 runs
+
+PreStake.sol was compiled with 0.8.17+commit.8df45f5f and 200000 runs
