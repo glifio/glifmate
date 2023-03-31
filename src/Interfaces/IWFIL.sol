@@ -1,9 +1,8 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
 interface IWFIL {
-  function deposit() external payable;
-  function withdraw(uint256 _amount) external payable;
+
     /**
      * @dev Emitted when `value` tokens are moved from one account (`from`) to
      * another (`to`).
@@ -76,4 +75,14 @@ interface IWFIL {
         address to,
         uint256 amount
     ) external returns (bool);
+
+    /**
+     * @dev Takes `msg.value` FIL and mints `msg.value` WFIL.
+     */
+    function deposit() external payable;
+
+    /**
+     * @dev Sends `amount` FIL to `msg.sender` and burn `amount` WFIL.
+     */
+    function withdraw(uint256 amount) external payable;
 }
