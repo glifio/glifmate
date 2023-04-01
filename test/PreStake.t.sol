@@ -6,6 +6,8 @@ import "forge-std/Test.sol";
 import {WFIL} from "shim/WFIL.sol";
 import {PreStake} from "src/PreStake.sol";
 import {PoolToken} from "src/PoolToken.sol";
+import {IWFIL} from "src/Interfaces/IWFIL.sol";
+import {IPoolToken} from "src/Interfaces/IPoolToken.sol";
 
 contract PreStakeTest is Test {
   uint256 constant DUST = 1_000;
@@ -21,7 +23,7 @@ contract PreStakeTest is Test {
   function setUp() public {
     wFIL = new WFIL(owner);
     poolToken = new PoolToken(owner);
-    preStake = new PreStake(owner, address(wFIL), address(poolToken));
+    preStake = new PreStake(owner, IWFIL(address(wFIL)), IPoolToken(address(poolToken)));
     vm.startPrank(owner);
     poolToken.setMinter(address(preStake));
     vm.stopPrank();

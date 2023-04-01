@@ -7,23 +7,6 @@
 [submodule "lib/solmate"]
 	path = lib/solmate
 	url = https://github.com/transmissions11/solmate
-[submodule "lib/solidity-bytes-utils"]
-	path = lib/solidity-bytes-utils
-	url = https://github.com/GNSPS/solidity-bytes-utils
-  branch = v0.8.0
-[submodule "lib/filecoin-solidity"]
-	path = lib/filecoin-solidity
-	url = https://github.com/Zondax/filecoin-solidity
-  branch = v4.0.2
-[submodule "lib/solidity-cborutils"]
-	path = lib/solidity-cborutils
-	url = https://github.com/smartcontractkit/solidity-cborutils
-[submodule "lib/buffer"]
-	path = lib/buffer
-	url = https://github.com/ensdomains/buffer
 [submodule "lib/fevmate"]
 	path = lib/fevmate
 	url = https://github.com/wadealexc/fevmate
-[submodule "lib/openzeppelin-contracts"]
-	path = lib/openzeppelin-contracts
-	url = https://github.com/openzeppelin/openzeppelin-contracts
