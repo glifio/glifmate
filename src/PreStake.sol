@@ -5,13 +5,14 @@ import {FilAddress} from "shim/FilAddress.sol";
 import {OwnedClaimable} from "shim/OwnedClaimable.sol";
 import {IWFIL} from "src/Interfaces/IWFIL.sol";
 import {IPoolToken} from "src/Interfaces/IPoolToken.sol";
+import {IPreStake} from "src/Interfaces/IPreStake.sol";
 
 /**
  * @title PreStake
  * @author GLIF
  * @notice The PreStake contract is used to commit FIL tokens before the Infinity Pool is deployed
  */
-contract PreStake is OwnedClaimable {
+contract PreStake is IPreStake, OwnedClaimable {
 
   using FilAddress for address;
 
