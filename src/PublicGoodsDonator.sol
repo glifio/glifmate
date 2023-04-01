@@ -18,7 +18,7 @@ contract PublicGoodsDonator is OwnedClaimable {
   using FilAddress for address;
 
   event Donate(address indexed account, uint256 donationAmount);
-  event DistributePG(address indexed wallet, uint256 amount);
+  event WithdrawFunds(address indexed wallet, uint256 amount);
 
   event Pause();
   event Resume();
@@ -33,8 +33,8 @@ contract PublicGoodsDonator is OwnedClaimable {
     }
     _;
   }
-  address public pgWallet;
-  IPreStake public preStake;
+
+  IPreStake public immutable preStake;
 
   IWFIL private wFIL;
   IERC20 private iFIL;
@@ -115,11 +115,12 @@ contract PublicGoodsDonator is OwnedClaimable {
   }
 
   /**
-   * @notice Sends iFIL to the PG wallet
-   * @param amount The amount of iFIL to send
+   * @notice Sends iFIL to the owner
    */
-  function distributePG(uint256 amount) external onlyOwner {
-    iFIL.transfer(pgWallet, amount);
-    emit DistributePG(pgWallet, amount);
+  function withdrawFunds() external onlyOwner {
+    address owner = owner();
+    uint256 amount = iFIL.balanceOf(address(this));
+    iFIL.transfer(owner, amount);
+    emit WithdrawFunds(owner, amount);
   }
 }
