@@ -24,3 +24,6 @@
 [submodule "lib/fevmate"]
 	path = lib/fevmate
 	url = https://github.com/wadealexc/fevmate
+[submodule "lib/openzeppelin-contracts"]
+	path = lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
