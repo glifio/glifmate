@@ -23,17 +23,16 @@ contract PublicGoodsDonator is OwnedClaimable {
   event Pause();
   event Resume();
 
+  /// @dev WAD is used to compute the split % to pg wallet
+  uint256 immutable DENOM = 100;
+
   /// @dev modifier to ensure `donationPercentage` is 100% max
   modifier noOverDonations(uint256 donationPercentage) {
-    if (donationPercentage > WAD) {
+    if (donationPercentage > DENOM) {
       revert InvalidParams();
     }
     _;
   }
-
-  /// @dev WAD is used to compute the split % to pg wallet
-  uint256 immutable WAD = 1e18;
-
   address public pgWallet;
   IPreStake public preStake;
 
@@ -57,7 +56,7 @@ contract PublicGoodsDonator is OwnedClaimable {
    * @notice Deposit WFIL into the PreStake contract
    * @param recipient The account to pull WFIL from and forward the iFIL tokens to
    * @param amount The amount of WFIL stake
-   * @param donationPercent The percentage of the amount to split to the PG wallet. 1e18 = 100%
+   * @param donationPercent The percentage of the amount to split to the PG wallet. 100 = 100%
    */
   function deposit(
     address recipient,
@@ -68,20 +67,22 @@ contract PublicGoodsDonator is OwnedClaimable {
     recipient = recipient.normalize();
     // pull in funds from msg.sender
     wFIL.transferFrom(msg.sender, address(this), amount);
+    // approve the PreStake contract to spend our WFIL
+    wFIL.approve(address(preStake), amount);
     // track before and after balance to compute how many tokens we got back
     uint256 preDepositBal = iFIL.balanceOf(address(this));
     // deposit WFIL into the PreStake contract
-    preStake.deposit(recipient, amount);
+    preStake.deposit(address(this), amount);
 
     uint256 postDepositBal = iFIL.balanceOf(address(this));
 
-    _donateIFIL(recipient, postDepositBal, preDepositBal, donationPercent);
+    _donateIFIL(recipient, postDepositBal - preDepositBal, donationPercent);
   }
 
   /**
    * @notice Deposit `msg.value` native FIL tokens into the PreStake contract
    * @param recipient The account to prestake FIL and mint the iFIL tokens to
-   * @param donationPercent The percentage of the amount to split to the PG wallet. 1e18 = 100%
+   * @param donationPercent The percentage of the amount to split to the PG wallet. 100 = 100%
    */
   function deposit(
     address recipient,
@@ -92,22 +93,21 @@ contract PublicGoodsDonator is OwnedClaimable {
     // track before and after balance to compute how many tokens we got back
     uint256 preDepositBal = iFIL.balanceOf(address(this));
     // deposit FIL into the PreStake contract
-    preStake.deposit{value: msg.value}(recipient);
+    preStake.deposit{value: msg.value}(address(this));
 
     uint256 postDepositBal = iFIL.balanceOf(address(this));
 
-    _donateIFIL(recipient, postDepositBal, preDepositBal, donationPercent);
+    _donateIFIL(recipient, postDepositBal - preDepositBal, donationPercent);
   }
 
   /// @dev computes amount of iFIL to forward to the recipient and transfers it
   function _donateIFIL(
     address recipient,
-    uint256 postDepositBal,
-    uint256 preDepositBal,
+    uint256 newIFIL,
     uint256 donationPercent
   ) internal {
     // compute the amount to send on to the recipient
-    uint256 passThroughAmount = (postDepositBal - preDepositBal) * donationPercent / WAD;
+    uint256 passThroughAmount = newIFIL - (newIFIL * donationPercent / DENOM);
 
     iFIL.transfer(recipient, passThroughAmount);
 
