@@ -5,7 +5,6 @@ import {FilAddress} from "shim/FilAddress.sol";
 import {OwnedClaimable} from "shim/OwnedClaimable.sol";
 import {IPreStake} from "src/Interfaces/IPreStake.sol";
 import {IWFIL} from "src/Interfaces/IWFIL.sol";
-import {IPoolToken} from "src/Interfaces/IPoolToken.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 /**
