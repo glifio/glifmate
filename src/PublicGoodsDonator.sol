@@ -19,9 +19,6 @@ contract PublicGoodsDonator is OwnedClaimable {
   event Donate(address indexed account, uint256 donationAmount);
   event WithdrawFunds(address indexed wallet, uint256 amount);
 
-  event Pause();
-  event Resume();
-
   /// @dev WAD is used to compute the split % to pg wallet
   uint256 immutable DENOM = 1e18;
 
