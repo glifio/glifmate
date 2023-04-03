@@ -24,7 +24,7 @@ contract PublicGoodsDonator is OwnedClaimable {
   event Resume();
 
   /// @dev WAD is used to compute the split % to pg wallet
-  uint256 immutable DENOM = 100;
+  uint256 immutable DENOM = 1e18;
 
   /// @dev modifier to ensure `donationPercentage` is 100% max
   modifier noOverDonations(uint256 donationPercentage) {

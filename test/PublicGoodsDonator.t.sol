@@ -11,7 +11,8 @@ contract PublicGoodsDonatorTest is BaseTest {
 
   function testDepositSimple() public {
     uint256 depositAmount = 10e18;
-    uint256 donationPercentage = 50; // 50%
+    uint256 WAD = 1e18;
+    uint256 donationPercentage = .50e18; // 50%
     vm.deal(staker, depositAmount);
     vm.prank(staker);
     publicGoodsDonator.deposit{value: depositAmount}(staker, donationPercentage);
@@ -30,7 +31,7 @@ contract PublicGoodsDonatorTest is BaseTest {
   }
 
   function testDepositFIL(uint256 depositAmount, uint256 donationPercentage) public {
-    donationPercentage = bound(donationPercentage, 0, 100);
+    donationPercentage = bound(donationPercentage, 0, 1e18);
     depositAmount = bound(depositAmount, DUST, MAX_FIL_AMOUNT);
     vm.deal(staker, depositAmount);
     vm.prank(staker);
@@ -40,7 +41,7 @@ contract PublicGoodsDonatorTest is BaseTest {
   }
 
   function testDepositWFIL(uint256 depositAmount, uint256 donationPercentage) public {
-    donationPercentage = bound(donationPercentage, 0, 100);
+    donationPercentage = bound(donationPercentage, 0, 1e18);
     depositAmount = bound(depositAmount, DUST, MAX_FIL_AMOUNT);
     _loadWFIL(depositAmount);
     vm.startPrank(staker);
@@ -53,7 +54,7 @@ contract PublicGoodsDonatorTest is BaseTest {
     uint256 depositAmount,
     uint256 donationPercentage
   ) public {
-    donationPercentage = bound(donationPercentage, 0, 100);
+    donationPercentage = bound(donationPercentage, 0, 1e18);
     depositAmount = bound(depositAmount, DUST, 1e41);
     _loadWFIL(depositAmount);
     vm.deal(staker, depositAmount);
@@ -76,7 +77,7 @@ contract PublicGoodsDonatorTest is BaseTest {
 
     assertApproxEqAbs(
       poolToken.balanceOf(publicGoodsDonatorOwner),
-      depositAmount * donationPercentage / 100,
+      depositAmount * donationPercentage / WAD,
       DUST,
       "Public goods donator owner should have IFIL equal to deposited amount times donation percentage"
     );
@@ -100,12 +101,12 @@ contract PublicGoodsDonatorTest is BaseTest {
   function assertDepositSuccess(uint256 depositAmount, uint256 donationPercentage) internal {
     assertEq(
       poolToken.balanceOf(staker),
-      depositAmount - ((depositAmount * donationPercentage) / 100),
+      depositAmount - ((depositAmount * donationPercentage) / WAD),
       "staker should have IFIL equal to deposit amount minus donation"
     );
     assertEq(
       poolToken.balanceOf(address(publicGoodsDonator)),
-      depositAmount * donationPercentage / 100,
+      depositAmount * donationPercentage / WAD,
       "Public goods donator should have IFIL equal to donation"
     );
 
