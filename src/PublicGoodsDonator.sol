@@ -33,19 +33,19 @@ contract PublicGoodsDonator is OwnedClaimable {
   IPreStake public immutable preStake;
 
   IWFIL private wFIL;
-  IERC20 private iFIL;
+  IERC20 private liquidStakingToken;
 
   constructor(
     address _owner,
     IPreStake _preStake,
     IWFIL _wFIL,
-    IERC20 _poolToken
+    IERC20 _liquidStakingToken
   )
     OwnedClaimable(_owner)
   {
     preStake = _preStake;
     wFIL = _wFIL;
-    iFIL = _poolToken;
+    liquidStakingToken = _liquidStakingToken;
   }
 
   /**
@@ -66,11 +66,11 @@ contract PublicGoodsDonator is OwnedClaimable {
     // approve the PreStake contract to spend our WFIL
     wFIL.approve(address(preStake), amount);
     // track before and after balance to compute how many tokens we got back
-    uint256 preDepositBal = iFIL.balanceOf(address(this));
+    uint256 preDepositBal = liquidStakingToken.balanceOf(address(this));
     // deposit WFIL into the PreStake contract
     preStake.deposit(address(this), amount);
 
-    uint256 postDepositBal = iFIL.balanceOf(address(this));
+    uint256 postDepositBal = liquidStakingToken.balanceOf(address(this));
 
     _donateIFIL(recipient, postDepositBal - preDepositBal, donationPercent);
   }
@@ -87,11 +87,11 @@ contract PublicGoodsDonator is OwnedClaimable {
     // normalize the address in case of a FIL ID
     recipient = recipient.normalize();
     // track before and after balance to compute how many tokens we got back
-    uint256 preDepositBal = iFIL.balanceOf(address(this));
+    uint256 preDepositBal = liquidStakingToken.balanceOf(address(this));
     // deposit FIL into the PreStake contract
     preStake.deposit{value: msg.value}(address(this));
 
-    uint256 postDepositBal = iFIL.balanceOf(address(this));
+    uint256 postDepositBal = liquidStakingToken.balanceOf(address(this));
 
     _donateIFIL(recipient, postDepositBal - preDepositBal, donationPercent);
   }
@@ -105,7 +105,7 @@ contract PublicGoodsDonator is OwnedClaimable {
     // compute the amount to send on to the recipient
     uint256 passThroughAmount = newIFIL - (newIFIL * donationPercent / DENOM);
 
-    iFIL.transfer(recipient, passThroughAmount);
+    liquidStakingToken.transfer(recipient, passThroughAmount);
 
     emit Donate(recipient, passThroughAmount);
   }
@@ -115,8 +115,8 @@ contract PublicGoodsDonator is OwnedClaimable {
    */
   function withdrawFunds() external onlyOwner {
     address owner = owner();
-    uint256 amount = iFIL.balanceOf(address(this));
-    iFIL.transfer(owner, amount);
+    uint256 amount = liquidStakingToken.balanceOf(address(this));
+    liquidStakingToken.transfer(owner, amount);
     emit WithdrawFunds(owner, amount);
   }
 }
