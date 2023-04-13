@@ -17,7 +17,7 @@ pragma solidity 0.8.17;
 abstract contract OwnedClaimable {
 
     error Unauthorized();
-    error InvalidParams();
+    error InvalidAddress();
 
     address private _owner;
     address private _pendingOwner;
@@ -30,7 +30,7 @@ abstract contract OwnedClaimable {
      * @dev Initializes the contract setting `owner` as the initial owner.
      */
     constructor(address _initialOwner) {
-      if (_initialOwner == address(0)) revert InvalidParams();
+      if (_initialOwner == address(0)) revert InvalidAddress();
 
       _transferOwnership(_initialOwner);
     }
