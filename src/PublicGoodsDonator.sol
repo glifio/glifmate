@@ -16,6 +16,8 @@ contract PublicGoodsDonator is OwnedClaimable {
 
   using FilAddress for address;
 
+  error InvalidParams();
+
   event Donate(address indexed account, uint256 donationAmount);
   event WithdrawFunds(address indexed wallet, uint256 amount);
 
@@ -32,8 +34,8 @@ contract PublicGoodsDonator is OwnedClaimable {
 
   IPreStake public immutable preStake;
 
-  IWFIL private wFIL;
-  IERC20 private liquidStakingToken;
+  IWFIL private immutable wFIL;
+  IERC20 private immutable liquidStakingToken;
 
   constructor(
     address _owner,
