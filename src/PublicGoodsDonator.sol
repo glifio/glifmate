@@ -116,7 +116,6 @@ contract PublicGoodsDonator is OwnedClaimable {
    * @notice Sends iFIL to the owner
    */
   function withdrawFunds() external onlyOwner {
-    address owner = owner();
     uint256 amount = liquidStakingToken.balanceOf(address(this));
     liquidStakingToken.transfer(owner, amount);
     emit WithdrawFunds(owner, amount);
