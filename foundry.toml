@@ -2,7 +2,7 @@
 src = 'src'
 out = 'out'
 libs = ['lib', 'shim/Mock']
-solc_version = "0.8.17"
+solc_version = "0.8.21"
 remappings = [
   "ds-test/=lib/forge-std/lib/ds-test/src/",
   "forge-std/=lib/forge-std/src/",
@@ -17,7 +17,7 @@ remappings = [
 src = 'src'
 out = 'out-fevm'
 libs = ['lib', 'shim/FEVM']
-solc_version = "0.8.17"
+solc_version = "0.8.21"
 remappings = [
   "ds-test/=lib/forge-std/lib/ds-test/src/",
   "forge-std/=lib/forge-std/src/",

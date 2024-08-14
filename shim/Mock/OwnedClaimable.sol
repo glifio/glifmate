@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Inspired by OpenZeppelin Contracts (last updated v4.7.0) (access/Ownable.sol)
 
-pragma solidity 0.8.17;
+pragma solidity 0.8.21;
 
 /**
  * @dev Contract module which provides a basic access control mechanism, where
@@ -15,7 +15,6 @@ pragma solidity 0.8.17;
  * from parent (Ownable).
  */
 abstract contract OwnedClaimable {
-
     error Unauthorized();
     error InvalidAddress();
 
@@ -30,24 +29,24 @@ abstract contract OwnedClaimable {
      * @dev Initializes the contract setting `owner` as the initial owner.
      */
     constructor(address _initialOwner) {
-      if (_initialOwner == address(0)) revert InvalidAddress();
+        if (_initialOwner == address(0)) revert InvalidAddress();
 
-      _transferOwnership(_initialOwner);
+        _transferOwnership(_initialOwner);
     }
 
     /**
      * @dev Throws if called by any account other than the owner.
      */
     modifier onlyOwner() {
-      _checkOwner();
-      _;
+        _checkOwner();
+        _;
     }
 
     /**
      * @dev Throws if the sender is not the owner.
      */
     function _checkOwner() internal view virtual {
-      if (owner != msg.sender) revert Unauthorized();
+        if (owner != msg.sender) revert Unauthorized();
     }
 
     /**
@@ -59,23 +58,22 @@ abstract contract OwnedClaimable {
         emit OwnershipTransferStarted(owner, pendingOwner);
     }
 
-
     /**
      * @dev Transfers ownership of the contract to a new account (`newOwner`).
      * Internal function without access restriction.
      */
     function _transferOwnership(address newOwner) internal virtual {
-      delete pendingOwner;
-      address oldOwner = owner;
-      owner = newOwner;
-      emit OwnershipTransferred(oldOwner, owner);
+        delete pendingOwner;
+        address oldOwner = owner;
+        owner = newOwner;
+        emit OwnershipTransferred(oldOwner, owner);
     }
 
     /**
      * @dev The new owner accepts the ownership transfer.
      */
     function acceptOwnership() external {
-      if (pendingOwner != msg.sender) revert Unauthorized();
-      _transferOwnership(msg.sender);
+        if (pendingOwner != msg.sender) revert Unauthorized();
+        _transferOwnership(msg.sender);
     }
 }

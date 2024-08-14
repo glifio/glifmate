@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity 0.8.21;
 
 /**
  * @author fevmate (https://github.com/wadealexc/fevmate)
@@ -8,7 +8,6 @@ pragma solidity 0.8.17;
  *
  */
 library FilAddress {
-
     // Custom errors
     error CallFailed();
     error InvalidAddress();
@@ -58,12 +57,12 @@ library FilAddress {
 
     function getActorID(address _eth) internal view returns (bool success, uint64 id) {}
 
-    function sendValue(address payable _recipient, uint _amount) internal {
+    function sendValue(address payable _recipient, uint256 _amount) internal {
         if (address(this).balance < _amount) revert InsufficientFunds();
 
-        (bool success, ) = _recipient.call{value: _amount}("");
+        (bool success,) = _recipient.call{value: _amount}("");
         if (!success) revert CallFailed();
     }
 
-    function returnDataSize() private pure returns (uint size) {}
+    function returnDataSize() private pure returns (uint256 size) {}
 }

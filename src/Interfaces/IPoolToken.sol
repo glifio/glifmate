@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity 0.8.21;
 
 /**
  * @dev PoolToken defines the additional functions an IPoolToken must extend in additon
-        to the ERC20 interface to include minting and burning.
+ *         to the ERC20 interface to include minting and burning.
  */
 interface IPoolToken {
-
     /**
      * @dev Mints PoolTokens. Protected call.
      */

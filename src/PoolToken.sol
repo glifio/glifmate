@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity 0.8.21;
 
 import {ERC20} from "shim/ERC20.sol";
 import {OwnedClaimable} from "shim/OwnedClaimable.sol";
@@ -31,9 +31,7 @@ contract PoolToken is ERC20, OwnedClaimable {
         _;
     }
 
-    constructor(
-        address _owner
-    ) ERC20("Infinity Pool Staked FIL", "iFIL", 18) OwnedClaimable(_owner) {}
+    constructor(address _owner) ERC20("Infinity Pool Staked FIL", "iFIL", 18) OwnedClaimable(_owner) {}
 
     /*//////////////////////////////////////////////////////////////
                             MINT/BURN TOKENS
@@ -44,12 +42,9 @@ contract PoolToken is ERC20, OwnedClaimable {
      * @param account The account to mint to
      * @param amount The amount to mint
      */
-    function mint(
-        address account,
-        uint256 amount
-    ) external onlyMinter returns (bool) {
-      _mint(account, amount);
-      return true;
+    function mint(address account, uint256 amount) external onlyMinter returns (bool) {
+        _mint(account, amount);
+        return true;
     }
 
     /**
@@ -57,12 +52,9 @@ contract PoolToken is ERC20, OwnedClaimable {
      * @param account The account to burn from
      * @param amount The amount to burn
      */
-    function burn(
-        address account,
-        uint256 amount
-    ) external onlyBurner returns (bool) {
-      _burn(account, amount);
-      return true;
+    function burn(address account, uint256 amount) external onlyBurner returns (bool) {
+        _burn(account, amount);
+        return true;
     }
 
     /*//////////////////////////////////////////////////////////////

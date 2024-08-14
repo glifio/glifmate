@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity 0.8.21;
 
 interface IPreStake {
+    function deposit(address recipient, uint256 amount) external;
 
-  function deposit(address recipient, uint256 amount) external;
+    function deposit(address recipient) external payable;
 
-  function deposit(address recipient) external payable;
+    function convertFILtoWFIL() external;
 
-  function convertFILtoWFIL() external;
-
-  function approvePoolToTransfer(address pool, uint256 amount) external;
+    function approvePoolToTransfer(address pool, uint256 amount) external;
 }
